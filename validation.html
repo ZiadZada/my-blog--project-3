@@ -1,0 +1,141 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Form</title>
+    <link rel="stylesheet" href="css/Stylesheet.css">
+</head>
+<body>
+
+    
+<header>
+    <div class="container header-content">
+        <h1><a href="index.html">My Blog</a></h1>
+
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="about.html">About</a>
+            <a href="contact.html">Contact</a>
+            <a href="validation.html">Registration</a>
+            <a href="data.html">Data Table</a>
+        </nav>
+    </div>
+</header>
+
+    <main>
+        <section>
+            <h2>Registration Form</h2>
+
+            <form id="registrationForm" novalidate>
+
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name">
+                <small class="error" id="nameError"></small>
+
+                <label for="email">Email:</label>
+                <input type="text" id="email" name="email">
+                <small class="error" id="emailError"></small>
+
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password">
+                <small class="error" id="passwordError"></small>
+
+                <label for="confirmPassword">Confirm Password:</label>
+                <input type="password" id="confirmPassword"
+                       name="confirmPassword">
+                <small class="error" id="confirmPasswordError"></small>
+
+                <label for="age">Age:</label>
+                <input type="number" id="age" name="age">
+                <small class="error" id="ageError"></small>
+
+                <button type="submit">Register</button>
+
+                <p id="successMessage" class="success"></p>
+
+            </form>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 My Blog</p>
+    </footer>
+
+    <script>
+        const form = document.getElementById("registrationForm");
+
+        form.addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            const name = document.getElementById("name").value.trim();
+            const email = document.getElementById("email").value.trim();
+            const password = document.getElementById("password").value;
+            const confirmPassword =
+                document.getElementById("confirmPassword").value;
+            const age = document.getElementById("age").value.trim();
+
+            let isValid = true;
+
+            document.querySelectorAll(".error").forEach(function(error) {
+                error.textContent = "";
+            });
+
+            document.getElementById("successMessage").textContent = "";
+
+            if (name === "") {
+                document.getElementById("nameError").textContent =
+                    "Name is required.";
+                isValid = false;
+            }
+
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+            if (email === "") {
+                document.getElementById("emailError").textContent =
+                    "Email is required.";
+                isValid = false;
+            } else if (!emailPattern.test(email)) {
+                document.getElementById("emailError").textContent =
+                    "Please enter a valid email.";
+                isValid = false;
+            }
+
+            if (password.length < 8) {
+                document.getElementById("passwordError").textContent =
+                    "Password must be at least 8 characters.";
+                isValid = false;
+            }
+
+            if (confirmPassword === "") {
+                document.getElementById("confirmPasswordError").textContent =
+                    "Please confirm your password.";
+                isValid = false;
+            } else if (password !== confirmPassword) {
+                document.getElementById("confirmPasswordError").textContent =
+                    "Passwords do not match.";
+                isValid = false;
+            }
+
+            if (age === "") {
+                document.getElementById("ageError").textContent =
+                    "Age is required.";
+                isValid = false;
+            } else if (!Number.isInteger(Number(age)) ||
+                       Number(age) < 1 || Number(age) > 120) {
+                document.getElementById("ageError").textContent =
+                    "Age must be a whole number between 1 and 120.";
+                isValid = false;
+            }
+
+            if (isValid) {
+                document.getElementById("successMessage").textContent =
+                    "Registration form is valid!";
+
+                // No data is sent to a server.
+            }
+        });
+    </script>
+
+</body>
+</html>

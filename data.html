@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Table</title>
+    <link rel="stylesheet" href="css/Stylesheet.css">
+</head>
+<body>
+
+    
+<header>
+    <div class="container header-content">
+        <h1><a href="index.html">My Blog</a></h1>
+
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="about.html">About</a>
+            <a href="contact.html">Contact</a>
+            <a href="validation.html">Registration</a>
+            <a href="data.html">Data Table</a>
+        </nav>
+    </div>
+</header>
+
+    <main>
+        <section>
+            <h2>People Data</h2>
+
+            <label for="searchInput">Search by name, age, or city:</label>
+            <input type="text" id="searchInput"
+                   placeholder="Type to search...">
+
+            <p>Sort the table:</p>
+            <button type="button" id="sortName">Sort by Name</button>
+            <button type="button" id="sortAge">Sort by Age</button>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Age</th>
+                        <th>City</th>
+                    </tr>
+                </thead>
+
+                <tbody id="tableBody"></tbody>
+            </table>
+
+            <p id="resultMessage"></p>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 My Blog</p>
+    </footer>
+
+    <script>
+        const people = [
+            { name: "Ahmed", age: 21, city: "Cairo" },
+            { name: "Mohamed", age: 25, city: "Giza" },
+            { name: "Ali", age: 19, city: "Alexandria" },
+            { name: "Omar", age: 23, city: "Cairo" },
+            { name: "Sara", age: 22, city: "Giza" }
+        ];
+
+        let displayedPeople = [...people];
+
+        const tableBody = document.getElementById("tableBody");
+        const searchInput = document.getElementById("searchInput");
+        const resultMessage = document.getElementById("resultMessage");
+
+        function displayTable(data) {
+            tableBody.textContent = "";
+
+            data.forEach(function(person) {
+                const row = document.createElement("tr");
+
+                const nameCell = document.createElement("td");
+                nameCell.textContent = person.name;
+
+                const ageCell = document.createElement("td");
+                ageCell.textContent = person.age;
+
+                const cityCell = document.createElement("td");
+                cityCell.textContent = person.city;
+
+                row.appendChild(nameCell);
+                row.appendChild(ageCell);
+                row.appendChild(cityCell);
+
+                tableBody.appendChild(row);
+            });
+
+            resultMessage.textContent =
+                data.length === 0
+                    ? "No matching results found."
+                    : "Number of results: " + data.length;
+        }
+
+        function filterTable() {
+            const searchText = searchInput.value.toLowerCase().trim();
+
+            displayedPeople = people.filter(function(person) {
+                return person.name.toLowerCase().includes(searchText) ||
+                       String(person.age).includes(searchText) ||
+                       person.city.toLowerCase().includes(searchText);
+            });
+
+            displayTable(displayedPeople);
+        }
+
+        searchInput.addEventListener("input", filterTable);
+
+        document.getElementById("sortName").addEventListener("click", function() {
+            displayedPeople.sort(function(a, b) {
+                return a.name.localeCompare(b.name);
+            });
+
+            displayTable(displayedPeople);
+        });
+
+        document.getElementById("sortAge").addEventListener("click", function() {
+            displayedPeople.sort(function(a, b) {
+                return a.age - b.age;
+            });
+
+            displayTable(displayedPeople);
+        });
+
+        displayTable(displayedPeople);
+    </script>
+
+</body>
+</html>
